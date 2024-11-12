@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -10,18 +11,19 @@ function Register() {
     event.preventDefault();
     try {
       // Send registration request
-      const response = await fetch("http://localhost:5000/register", {
+      const response = await fetch("http://localhost:3000/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
       });
+      const data = await response.json();
       if (response.ok) {
+        toast.success("Registration successful!");
         navigate("/login");
       } else {
-        // Handle registration error
-        alert("Registration failed");
+        toast.error(data.message);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -63,6 +65,13 @@ function Register() {
             Register
           </button>
         </form>
+        <button
+          type="submit"
+          className="w-full bg-slate-600 text-white py-2 rounded hover:bg-slate-700 mt-2"
+          onClick={() => navigate("/")}
+        >
+          Back to home page
+        </button>
       </div>
     </div>
   );

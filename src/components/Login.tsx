@@ -18,13 +18,13 @@ function Login() {
         },
         body: JSON.stringify({ email, password }),
       });
+      const data = await response.json();
       if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem("token", data.token);
+        localStorage.setItem("token", data.access_token);
         navigate("/profile");
         toast.success("Login successful!");
       } else {
-        toast.error("Login failed. Please check your credentials.");
+        toast.error(data.message);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -66,6 +66,13 @@ function Login() {
             Login
           </button>
         </form>
+        <button
+          type="submit"
+          className="w-full bg-slate-600 text-white py-2 rounded hover:bg-slate-700 mt-2"
+          onClick={() => navigate("/")}
+        >
+          Back to home page
+        </button>
       </div>
     </div>
   );
